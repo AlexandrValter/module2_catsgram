@@ -4,32 +4,14 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class User {
-    private String email;
-    private String nickname;
-    private LocalDate birthdate;
+    private final String email;
+    private final String nickname;
+    private final LocalDate birthdate;
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
+    public User(String email, String nickname, String birthdate) {
         this.email = email;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
         this.nickname = nickname;
-    }
-
-    public LocalDate getBirthdate() {
-        return birthdate;
-    }
-
-    public void setBirthdate(LocalDate birthdate) {
-        this.birthdate = birthdate;
+        this.birthdate = LocalDate.parse(birthdate);
     }
 
     @Override
@@ -43,5 +25,17 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(email);
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public LocalDate getBirthdate() {
+        return birthdate;
     }
 }
