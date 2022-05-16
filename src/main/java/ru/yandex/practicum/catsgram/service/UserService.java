@@ -1,6 +1,6 @@
-package ru.yandex.practicum.catsgram.controller;
+package ru.yandex.practicum.catsgram.service;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 import ru.yandex.practicum.catsgram.exception.InvalidEmailException;
 import ru.yandex.practicum.catsgram.exception.UserAlreadyExistException;
 import ru.yandex.practicum.catsgram.model.User;
@@ -9,22 +9,19 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
-@RequestMapping("/users")
-public class UserController {
+@Service
+public class UserService {
     private final Map<String, User> users = new HashMap<>();
 
-    @GetMapping
     public Collection<User> findAll() {
         return users.values();
     }
 
-    @PostMapping
-    public User create(@RequestBody User user) {
-        if(user.getEmail() == null || user.getEmail().isBlank()) {
+    public User addUser(User user) {
+        if (user.getEmail() == null || user.getEmail().isBlank()) {
             throw new InvalidEmailException("Адрес электронной почты не может быть пустым.");
         }
-        if(users.containsKey(user.getEmail())) {
+        if (users.containsKey(user.getEmail())) {
             throw new UserAlreadyExistException("Пользователь с электронной почтой " +
                     user.getEmail() + " уже зарегистрирован.");
         }
@@ -32,13 +29,20 @@ public class UserController {
         return user;
     }
 
-    @PutMapping
-    public User put(@RequestBody User user) {
-        if(user.getEmail() == null || user.getEmail().isBlank()) {
+    public User updateUser(User user) {
+        if (user.getEmail() == null || user.getEmail().isBlank()) {
             throw new InvalidEmailException("Адрес электронной почты не может быть пустым.");
         }
         users.put(user.getEmail(), user);
-
         return user;
+    }
+
+
+    public User findUser(String email) {
+        if (users.containsKey(email)) {
+            return users.get(email);
+        } else {
+            return null;
+        }
     }
 }
